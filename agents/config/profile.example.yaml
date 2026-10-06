@@ -1,0 +1,55 @@
+# Copy to config/profile.yaml (gitignored) and fill in. Both agents send this to Claude as context,
+# so write it the way you'd brief a headhunter: specific numbers, scope and outcomes.
+
+name: Your Name
+headline: "<one line — role, scale, signature achievement>"
+location: Bengaluru, India
+citizenship: India
+age: <age>
+experience_years: <years>
+education:
+  - MBA, <school>, <year>
+  - B.Tech, <school>, <year>
+
+current:
+  title: <current title>
+  company: <current company>
+  industry: <industry>
+  total_comp: 6000000          # yearly, in `currency`
+  currency: INR
+  city: bengaluru          # key from knowledge/locations.yaml
+
+history:
+  - company: <company>
+    role: <role>
+    years: "2022-2025"
+    highlights:
+      - Owned a <X> P&L; grew revenue from <A> to <B>
+      - Led expansion into <markets>
+
+strengths:
+  - Full P&L ownership
+  - Consumer product at scale
+  - International expansion
+
+targets:
+  titles: [Head of Product, Director of Product, VP Product, GM, Head of Business, Head of Category, Head of E-commerce]
+  sectors_prefer: [consumer internet, B2C marketplaces, e-commerce, gaming, consumer fintech, consumer AI]
+  sectors_avoid: [pure B2B / enterprise SaaS]
+  min_total_comp_usd: 400000
+  locations_priority: [bay_area, seattle, singapore, new_york, dubai]
+
+household:
+  us_filing: mfj           # US federal filing status for offer maths: mfj | single
+  dependents:
+    - Spouse
+    - Child (expected <month year>)
+    - Two parents, aged <NN>; must live with us or very close
+  priorities: [best schools, best healthcare, nature, safety]
+
+long_term_goals:
+  - "Year 1: Director/Head-level consumer role with a path to work in the US"
+  - "Year 3-5: VP / GM scope at a top consumer-tech company"
+  - "Year 5-7: found a consumer-tech company"
+
+exclude_companies: []      # e.g. your current employer

@@ -1,0 +1,90 @@
+# Consumer-internet companies Scout crawls directly through their public job-board APIs.
+#
+# ats: greenhouse | lever | ashby | smartrecruiters | workday | none
+#   none = not crawlable via a public API (Scout still finds their roles through LinkedIn/Indeed/Google
+#          via the `boards` source); listing them marks them as known consumer companies.
+# slug: the company's board token on that ATS (the last part of e.g. boards.greenhouse.io/<slug>).
+# us_mnc: true for US multinationals whose offices abroad can lead to an L-1A transfer to the US.
+#
+# Slugs change when companies switch ATS. Run `scout doctor` to check them and fix or remove any that fail.
+
+companies:
+  # --- Greenhouse ---
+  - {name: Airbnb, ats: greenhouse, slug: airbnb, us_mnc: true}
+  - {name: DoorDash, ats: greenhouse, slug: doordashusa, us_mnc: true}
+  - {name: Instacart, ats: greenhouse, slug: instacart}
+  - {name: Pinterest, ats: greenhouse, slug: pinterest, us_mnc: true}
+  - {name: Reddit, ats: greenhouse, slug: reddit}
+  - {name: Discord, ats: greenhouse, slug: discord}
+  - {name: Duolingo, ats: greenhouse, slug: duolingo}
+  - {name: Lyft, ats: greenhouse, slug: lyft}
+  - {name: Robinhood, ats: greenhouse, slug: robinhood}
+  - {name: Coinbase, ats: greenhouse, slug: coinbase, us_mnc: true}
+  - {name: Roblox, ats: greenhouse, slug: roblox}
+  - {name: Twitch, ats: greenhouse, slug: twitch}
+  - {name: Chime, ats: greenhouse, slug: chime}
+  - {name: SoFi, ats: greenhouse, slug: sofi}
+  - {name: Nextdoor, ats: greenhouse, slug: nextdoor}
+  - {name: Strava, ats: greenhouse, slug: strava}
+  - {name: Grammarly, ats: greenhouse, slug: grammarly}
+  - {name: Faire, ats: greenhouse, slug: faire}
+  - {name: Thumbtack, ats: greenhouse, slug: thumbtack}
+  - {name: Peloton, ats: greenhouse, slug: peloton}
+  - {name: Block (Cash App), ats: greenhouse, slug: block}
+  - {name: Dropbox, ats: greenhouse, slug: dropbox}
+  - {name: Anthropic, ats: greenhouse, slug: anthropic}
+  - {name: Scopely, ats: greenhouse, slug: scopely}
+  - {name: DraftKings, ats: greenhouse, slug: draftkings}
+  - {name: PrizePicks, ats: greenhouse, slug: prizepicks}
+  - {name: Monzo, ats: greenhouse, slug: monzo}
+
+  # --- Lever ---
+  - {name: Spotify, ats: lever, slug: spotify}
+
+  # --- Ashby ---
+  - {name: OpenAI, ats: ashby, slug: openai}
+  - {name: Notion, ats: ashby, slug: notion}
+  - {name: ElevenLabs, ats: ashby, slug: elevenlabs}
+  - {name: Perplexity, ats: ashby, slug: perplexity}
+  - {name: Whatnot, ats: ashby, slug: whatnot}
+  - {name: Kalshi, ats: ashby, slug: kalshi}
+
+  # --- SmartRecruiters ---
+  - {name: Delivery Hero, ats: smartrecruiters, slug: DeliveryHero}
+
+  # --- Workday ---
+  - {name: Walmart, ats: workday, workday: {host: walmart.wd5.myworkdayjobs.com, tenant: walmart, site: WalmartExternal}, us_mnc: true}
+  - {name: PayPal, ats: workday, workday: {host: paypal.wd1.myworkdayjobs.com, tenant: paypal, site: jobs}, us_mnc: true}
+  - {name: Target, ats: workday, workday: {host: target.wd5.myworkdayjobs.com, tenant: target, site: targetcareers}, us_mnc: true}
+  - {name: Disney, ats: workday, workday: {host: disney.wd5.myworkdayjobs.com, tenant: disney, site: disneycareer}, us_mnc: true}
+  - {name: eBay, ats: workday, workday: {host: ebay.wd5.myworkdayjobs.com, tenant: ebay, site: apply}, us_mnc: true}
+  - {name: Nike, ats: workday, workday: {host: nike.wd1.myworkdayjobs.com, tenant: nike, site: nke}, us_mnc: true}
+  - {name: Zillow, ats: workday, workday: {host: zillow.wd5.myworkdayjobs.com, tenant: zillow, site: Zillow_Group_External}}
+
+  # --- Own career sites (found via the boards and posts sources; Amazon has its own source) ---
+  - {name: Amazon, ats: none, us_mnc: true}
+  - {name: Google, ats: none, us_mnc: true}
+  - {name: Meta, ats: none, us_mnc: true}
+  - {name: Microsoft, ats: none, us_mnc: true}
+  - {name: Apple, ats: none, us_mnc: true}
+  - {name: Uber, ats: none, us_mnc: true}
+  - {name: Netflix, ats: none, us_mnc: true}
+  - {name: LinkedIn, ats: none, us_mnc: true}
+  - {name: Expedia, ats: none, us_mnc: true}
+  - {name: Intuit, ats: none, us_mnc: true}
+  - {name: Adobe, ats: none, us_mnc: true}
+  - {name: Booking.com, ats: none}
+  - {name: TikTok, ats: none}
+  - {name: ByteDance, ats: none}
+  - {name: Shopee, ats: none}
+  - {name: Sea, ats: none}
+  - {name: Grab, ats: none}
+  - {name: Lazada, ats: none}
+  - {name: Shopify, ats: none}
+  - {name: Snap, ats: none}
+  - {name: Careem, ats: none}
+  - {name: Noon, ats: none}
+  - {name: Talabat, ats: none}
+  - {name: FanDuel, ats: none}
+  - {name: Electronic Arts, ats: none}
+  - {name: Flipkart, ats: none}

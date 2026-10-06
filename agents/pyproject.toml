@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "career-agents"
+version = "0.1.0"
+description = "Scout (job-search crawler) and Compass (career & relocation advisor), powered by Claude."
+requires-python = ">=3.10"
+dependencies = [
+  "anthropic>=1.11",
+  "pydantic>=2.7",
+  "pyyaml>=6",
+  "requests>=2.31",
+]
+
+[project.optional-dependencies]
+boards = ["python-jobspy>=1.2"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+scout = "career_agents.scout.cli:main"
+compass = "career_agents.compass.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["career_agents*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

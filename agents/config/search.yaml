@@ -1,0 +1,134 @@
+# What Scout looks for. Patterns are case-insensitive regular expressions matched against job titles.
+
+roles:
+  include:
+    - '\bhead of (product|business|category|e-?commerce|growth|marketplace|monetization)'
+    - '\b(category|business|product) head\b'
+    - '\b(senior |sr\.? )?director\b.*\b(product|category|e-?commerce|growth|business|marketplace)'
+    - '\b(group |senior |sr\.? )?(vice president|s?vp)\b.*\b(product|e-?commerce|category|business|growth|marketplace)'
+    - '\bavp\b.*\b(product|business|category|e-?commerce|growth)'
+    - '\bchief (product|business|operating) officer\b'
+    - '\b(cpo|cbo)\b'
+    - '\bgeneral manager\b'
+    - '\bgm\b'
+    - '\bgroup product (manager|lead)\b'
+    - '\bcountry (manager|head|director)\b'
+  exclude:
+    - '\bintern'
+    - '\bassociate\b'
+    - 'product marketing'
+    - 'business development'
+    - '\b(sales|engineering|software|hardware|data science|design|ux|research|legal|finance|accounting|people|hr|recruiting|talent|security|facilities|store|warehouse|fulfillment center|plant)\b'
+
+# Points by seniority for the rule-based pre-score (first match wins).
+seniority:
+  - {pattern: '\b(chief|cpo|cbo|s?vp|vice president|general manager|gm|country (manager|head|director))\b', points: 40}
+  - {pattern: '\bhead\b', points: 38}
+  - {pattern: '\b(senior|sr\.?) director\b', points: 38}
+  - {pattern: '\b(director|avp)\b', points: 34}
+  - {pattern: '\bgroup product\b', points: 26}
+
+# Where to look. `priority` 1 is most wanted. `boards` configures LinkedIn/Indeed/Glassdoor/Google/Naukri
+# searches (via python-jobspy); `amazon` is the location query for amazon.jobs.
+regions:
+  - key: bay_area
+    name: SF Bay Area
+    priority: 1
+    aliases: [san francisco, bay area, mountain view, menlo park, palo alto, sunnyvale, san jose, cupertino, redwood city, san mateo, santa clara, oakland, foster city, los gatos, burlingame]
+    boards: {location: "San Francisco Bay Area", country_indeed: usa, sites: [linkedin, indeed, glassdoor, google]}
+    amazon: "San Francisco, CA, USA"
+  - key: seattle
+    name: Seattle / Bellevue
+    priority: 1
+    aliases: [seattle, bellevue, redmond, kirkland]
+    boards: {location: "Seattle, WA", country_indeed: usa, sites: [linkedin, indeed, glassdoor, google]}
+    amazon: "Seattle, WA, USA"
+  - key: singapore
+    name: Singapore
+    priority: 1
+    aliases: [singapore]
+    boards: {location: "Singapore", country_indeed: singapore, sites: [linkedin, indeed, google]}
+    amazon: "Singapore"
+  - key: new_york
+    name: New York
+    priority: 2
+    aliases: [new york, nyc, manhattan, brooklyn]
+    boards: {location: "New York, NY", country_indeed: usa, sites: [linkedin, indeed, glassdoor, google]}
+    amazon: "New York, NY, USA"
+  - key: vancouver
+    name: Vancouver (bridge to Seattle)
+    priority: 2
+    aliases: [vancouver, burnaby, british columbia]
+    boards: {location: "Vancouver, BC", country_indeed: canada, sites: [linkedin, indeed, google]}
+    amazon: "Vancouver, BC, CAN"
+  - key: dubai
+    name: Dubai
+    priority: 2
+    aliases: [dubai, abu dhabi, united arab emirates, uae]
+    boards: {location: "Dubai", country_indeed: "united arab emirates", sites: [linkedin, indeed, google]}
+  - key: toronto
+    name: Toronto
+    priority: 3
+    aliases: [toronto, waterloo]
+    boards: {location: "Toronto, ON", country_indeed: canada, sites: [linkedin, indeed, google]}
+    amazon: "Toronto, ON, CAN"
+  - key: london
+    name: London
+    priority: 3
+    aliases: [london]
+    boards: {location: "London, UK", country_indeed: uk, sites: [linkedin, indeed, glassdoor, google]}
+    amazon: "London, GBR"
+  - key: amsterdam
+    name: Amsterdam
+    priority: 3
+    aliases: [amsterdam, amstelveen, netherlands, rotterdam, utrecht]
+    boards: {location: "Amsterdam", country_indeed: netherlands, sites: [linkedin, indeed, google]}
+  - key: india_launchpad
+    name: India (US-multinational launchpad for an L-1A move)
+    priority: 3
+    aliases: [bengaluru, bangalore, gurugram, gurgaon, mumbai, hyderabad, delhi, noida, india]
+    # Only keep India roles at companies listed in companies.yaml with `us_mnc: true`.
+    require_us_mnc: true
+    boards: {location: "Bengaluru, India", country_indeed: india, sites: [linkedin, indeed, naukri, google]}
+    amazon: "Bengaluru, KA, IND"
+
+# Words that suggest a consumer (B2C) vs. business (B2B) product; used in the rule-based pre-score.
+b2c_signals:
+  consumer: ['\bconsumers?\b', '\bb2c\b', 'millions of (users|customers|members|players|shoppers)', '\bmarketplace\b', 'e-?commerce', '\bshoppers\b', '\bsubscribers\b', '\bcreators\b', '\bgam(es|ing|ers)\b', '\bplayers\b', '\bcheckout\b', '\bd2c\b', '\bretail\b', 'mobile app']
+  business: ['\bb2b\b', '\bsaas\b', '\benterprise\b', '\bprocurement\b', 'developer platform', '\bapi platform\b', '\berp\b', '\bcrm\b', '\bcybersecurity\b', 'data infrastructure']
+
+# Companies to always drop (e.g. your current employer). Your private profile.yaml can add more.
+exclude_companies: []
+
+# Drop postings older than this many days (when the source reports a date).
+max_age_days: 30
+
+sources:
+  ats:
+    enabled: true            # Greenhouse / Lever / Ashby / SmartRecruiters / Workday boards in companies.yaml
+  amazon:
+    enabled: true
+  boards:
+    enabled: true            # needs `pip install -e ".[boards]"`; LinkedIn throttles datacenter IPs — run from home
+    search_terms: ["Director of Product", "Head of Product", "VP Product", "General Manager"]
+    results_per_query: 25
+    hours_old: 72
+    pause_seconds: 4
+  posts:
+    enabled: true            # LinkedIn "we're hiring" posts via Claude web search (needs ANTHROPIC_API_KEY)
+    regions: [bay_area, seattle, singapore, new_york, dubai]
+    lookback_days: 14
+    max_searches_per_region: 5
+
+# Keyword searches for boards that support search (Workday, SmartRecruiters, Amazon).
+keyword_search_terms: ["director product", "head of product", "vice president product", "general manager", "head of category", "ecommerce director"]
+
+scoring:
+  effort: medium             # Claude effort for each job assessment: low | medium | high
+  concurrency: 4
+  max_per_run: 150           # cap Claude calls per run; best rule-scored jobs first
+  min_rule_score: 30         # jobs below this pre-score are stored but not sent to Claude
+
+digest:
+  min_fit_score: 50          # hide scored jobs below this from the digest
+  max_items: 40

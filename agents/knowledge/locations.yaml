@@ -1,0 +1,214 @@
+# Candidate cities for Compass. Planning estimates as of October 2026 — edit freely.
+#
+# comp_band_usd:   typical total comp (base + bonus + equity) for Director / Head-of-Product / GM roles
+#                  at consumer-tech companies in that city.
+# family_cost_usd: yearly run-rate for a family of three plus two parents (living with you, or visiting
+#                  ~6 months a year where they can't live with you): renting a 3-4 bedroom home in a
+#                  strong school district, preschool/school, health insurance incl. parents, food,
+#                  transport, two trips to India.
+# scores:          0-10 judgments on each criterion; weights live under `weights`.
+
+as_of: 2026-10
+
+# USD value of one unit of each currency (approximate, Oct 2026).
+fx_to_usd:
+  USD: 1.0
+  EUR: 1.16
+  GBP: 1.34
+  CAD: 0.72
+  SGD: 0.78
+  AED: 0.2723
+  INR: 0.0113
+  CHF: 1.25
+
+criteria:
+  comp: Pay ceiling for the target level
+  career: Access to top consumer-internet roles and a path to VP/GM/CEO
+  startup: Capital, talent and network for founding a company later
+  parents: Can dependent parents live with you long-term?
+  residency: Speed and certainty of permanent residency / citizenship
+  schools: School quality and access
+  healthcare: Healthcare quality and access
+  nature: Nature and outdoor life
+  safety: Personal safety
+  india_proximity: Ease of flying back to India
+
+# Default weights reflect the user's stated priorities; override per question in Compass.
+weights:
+  comp: 0.20
+  career: 0.20
+  startup: 0.10
+  parents: 0.15
+  residency: 0.05
+  schools: 0.10
+  healthcare: 0.08
+  nature: 0.05
+  safety: 0.04
+  india_proximity: 0.03
+
+locations:
+  bay_area:
+    name: San Francisco Bay Area
+    aliases: [sf, san francisco, bay area, silicon valley, palo alto, mountain view, menlo park]
+    currency: USD
+    tax: us:CA
+    comp_band_usd: [380000, 700000]
+    family_cost_usd: 190000
+    scores: {comp: 10, career: 10, startup: 10, parents: 4, residency: 4, schools: 8, healthcare: 8, nature: 9, safety: 6, india_proximity: 2}
+    work_visa: L-1A (via a US multinational's office abroad), H-1B (wage-weighted lottery), O-1A
+    residency_path: EB-1C / EB-1A green card (~3.5-4 yr queue for India-born), citizenship 5 yrs later
+    parents: Visitor visas (B-1/B-2, up to ~6 months per visit) until you are a US citizen; then immediate sponsorship
+    schools: Excellent public districts (Cupertino, Palo Alto, Saratoga, Los Gatos) but $2.5M+ homes
+    healthcare: World-class; depends on employer insurance
+    nature: Coast, redwoods, Tahoe, Yosemite
+    employers: [Meta, Google, Apple, Airbnb, Uber, DoorDash, Instacart, Pinterest, Reddit, Discord, Robinhood, OpenAI, Anthropic, Netflix]
+  seattle:
+    name: Seattle / Bellevue
+    aliases: [seattle, bellevue, redmond, kirkland, washington]
+    currency: USD
+    tax: us:WA
+    comp_band_usd: [350000, 600000]
+    family_cost_usd: 150000
+    scores: {comp: 9, career: 9, startup: 7, parents: 4, residency: 4, schools: 8, healthcare: 8, nature: 10, safety: 6, india_proximity: 2}
+    work_visa: L-1A (Amazon/Microsoft internal transfers are routine), H-1B, O-1A
+    residency_path: EB-1C / EB-1A green card (~3.5-4 yr queue for India-born), citizenship 5 yrs later
+    parents: Visitor visas until citizenship (as US)
+    schools: Bellevue, Mercer Island, Issaquah, Lake Washington districts
+    healthcare: World-class; depends on employer insurance
+    nature: Mountains, lakes, Puget Sound, national parks; Vancouver 2.5h drive
+    employers: [Amazon, Microsoft, Expedia, Zillow, T-Mobile, Meta, Google, Uber]
+  new_york:
+    name: New York City
+    aliases: [new york, nyc, manhattan, brooklyn]
+    currency: USD
+    tax: us:NY_NYC
+    comp_band_usd: [330000, 550000]
+    family_cost_usd: 185000
+    scores: {comp: 9, career: 9, startup: 8, parents: 4, residency: 4, schools: 7, healthcare: 8, nature: 5, safety: 6, india_proximity: 3}
+    work_visa: L-1A, H-1B, O-1A
+    residency_path: EB-1C / EB-1A green card, citizenship 5 yrs later
+    parents: Visitor visas until citizenship (as US)
+    schools: Strong suburban districts (Westchester, NJ); city schools uneven
+    healthcare: World-class; depends on employer insurance
+    nature: Limited in-city; Hudson Valley and coast nearby
+    employers: [Google, Meta, Amazon, Spotify, Etsy, Peloton, Squarespace, DraftKings, FanDuel]
+  singapore:
+    name: Singapore
+    aliases: [singapore, sg]
+    currency: SGD
+    tax: sg
+    comp_band_usd: [260000, 460000]
+    family_cost_usd: 145000
+    scores: {comp: 8, career: 7, startup: 7, parents: 8, residency: 5, schools: 9, healthcare: 10, nature: 5, safety: 10, india_proximity: 9}
+    work_visa: Employment Pass (COMPASS); ONE Pass at >= S$30K/month fixed salary
+    residency_path: PR discretionary after ~2+ years; citizenship requires giving up Indian citizenship
+    parents: Long-Term Visit Pass when fixed monthly salary >= S$12,000
+    schools: World-class; international schools S$35-50K/yr
+    healthcare: Among the best in the world; expensive for foreigners
+    nature: Garden city, small; regional trips easy
+    employers: [Google, Meta, TikTok/ByteDance, Amazon, Grab, Sea/Shopee, Lazada, Airbnb, Stripe, Visa]
+  dubai:
+    name: Dubai
+    aliases: [dubai, uae, abu dhabi]
+    currency: AED
+    tax: ae
+    comp_band_usd: [230000, 420000]
+    family_cost_usd: 135000
+    scores: {comp: 7, career: 5, startup: 6, parents: 10, residency: 6, schools: 7, healthcare: 7, nature: 3, safety: 10, india_proximity: 10}
+    work_visa: Employer visa or 10-year Golden Visa
+    residency_path: Renewable residency / Golden Visa; no practical citizenship
+    parents: Sponsor both parents (~AED 20K/month salary, or Golden Visa); senior insurance AED 4-15K/parent/yr
+    schools: Good international schools, expensive
+    healthcare: Good private system
+    nature: Desert, beaches; very hot summers
+    employers: [Careem, Noon, Talabat, Tabby, Tamara, Amazon, Uber, Deliveroo]
+  toronto:
+    name: Toronto
+    aliases: [toronto, ontario, waterloo]
+    currency: CAD
+    tax: ca:ON
+    comp_band_usd: [190000, 330000]
+    family_cost_usd: 105000
+    scores: {comp: 5, career: 6, startup: 6, parents: 6, residency: 7, schools: 8, healthcare: 7, nature: 8, safety: 8, india_proximity: 3}
+    work_visa: Employer LMIA permit or intra-company transfer
+    residency_path: Express Entry after 12 months of Canadian experience (senior-managers category / CEC); citizenship ~3 yrs after PR
+    parents: Super Visa only (Parents and Grandparents Program paused July 2026)
+    schools: Strong public schools
+    healthcare: Universal; long wait times for specialists
+    nature: Lakes, cottage country
+    employers: [Shopify, Wealthsimple, Instacart, Uber, Google, Meta, Amazon, Faire]
+  vancouver:
+    name: Vancouver
+    aliases: [vancouver, british columbia, burnaby]
+    currency: CAD
+    tax: ca:BC
+    comp_band_usd: [180000, 320000]
+    family_cost_usd: 110000
+    scores: {comp: 5, career: 5, startup: 5, parents: 6, residency: 7, schools: 8, healthcare: 7, nature: 10, safety: 8, india_proximity: 3}
+    work_visa: Employer LMIA permit or intra-company transfer
+    residency_path: As Toronto; also a bridge to Seattle via L-1A
+    parents: Super Visa only (PGP paused)
+    schools: Strong public schools
+    healthcare: Universal; long wait times
+    nature: Mountains and ocean — among the best anywhere
+    employers: [Amazon, Microsoft, Meta, Electronic Arts, Clio]
+  amsterdam:
+    name: Amsterdam
+    aliases: [amsterdam, netherlands, holland, amstelveen]
+    currency: EUR
+    tax: nl
+    comp_band_usd: [190000, 330000]
+    family_cost_usd: 115000
+    scores: {comp: 5, career: 6, startup: 6, parents: 2, residency: 8, schools: 9, healthcare: 8, nature: 6, safety: 9, india_proximity: 4}
+    work_visa: Highly skilled migrant (>= EUR 5,942/month at 30+, 2026)
+    residency_path: PR after 5 years; naturalisation after 5 (renounce Indian)
+    parents: Effectively no long-term route; Schengen visits 90/180 days
+    schools: Excellent; international schools in Amstelveen
+    healthcare: Good, insurance-based
+    nature: Flat; beaches, dunes, forests nearby
+    employers: [Booking.com, Uber, Adyen, Miro, Picnic, Bolt, Netflix, Bitvavo]
+  london:
+    name: London
+    aliases: [london, uk, united kingdom]
+    currency: GBP
+    tax: uk
+    comp_band_usd: [250000, 450000]
+    family_cost_usd: 150000
+    scores: {comp: 7, career: 8, startup: 8, parents: 2, residency: 5, schools: 8, healthcare: 7, nature: 6, safety: 7, india_proximity: 5}
+    work_visa: Skilled Worker or Global Talent
+    residency_path: Settlement rules tightening (longer qualifying period proposed)
+    parents: Adult Dependent Relative visa is near-impossible
+    schools: Excellent state and private schools
+    healthcare: NHS (waits) plus private
+    nature: Countryside within an hour
+    employers: [Google, Meta, Amazon, Spotify, Revolut, Monzo, Deliveroo, Wise]
+  zurich:
+    name: Zurich
+    aliases: [zurich, switzerland]
+    currency: CHF
+    tax: ch:ZH
+    comp_band_usd: [300000, 450000]
+    family_cost_usd: 175000
+    scores: {comp: 8, career: 5, startup: 5, parents: 2, residency: 4, schools: 9, healthcare: 10, nature: 10, safety: 10, india_proximity: 4}
+    work_visa: Non-EU quota permits (employer-led)
+    residency_path: C permit typically after 10 years for Indian nationals
+    parents: Non-EU parents generally not admissible long-term
+    schools: Excellent
+    healthcare: Among the best in the world
+    nature: Alps and lakes
+    employers: [Google, Microsoft, Meta (small), On, Galaxus]
+  bengaluru:
+    name: Bengaluru (stay / US-multinational launchpad)
+    aliases: [bengaluru, bangalore, india, gurugram, gurgaon, mumbai]
+    currency: INR
+    tax: in
+    comp_band_usd: [150000, 300000]
+    family_cost_usd: 50000
+    scores: {comp: 4, career: 6, startup: 7, parents: 10, residency: 10, schools: 6, healthcare: 6, nature: 4, safety: 6, india_proximity: 10}
+    work_visa: Not needed
+    residency_path: Citizen
+    parents: Live together
+    schools: Good international schools; air quality and commute are the costs
+    healthcare: Excellent private hospitals, affordable
+    nature: Limited; weekend trips to Coorg, Western Ghats
+    employers: [Amazon, Google, Meta, Microsoft, Uber, Walmart Global Tech, Flipkart]
