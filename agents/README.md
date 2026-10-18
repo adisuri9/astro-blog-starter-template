@@ -48,7 +48,14 @@ scout add --company Uber --title "Director, Product" --url <link> --score    # a
 | `posts` | LinkedIn posts by founders, execs and recruiters saying they're hiring | Claude's web search, restricted to linkedin.com; only URLs that appear in search results are kept |
 
 Screening (all in `config/search.yaml`):
-1. **Title**: include/exclude regexes for Head/Director/VP/AVP/GM/CPO/Category/E-commerce roles.
+1. **Title**: any senior title in any business function (Head of X, Director, VP/AVP, GM, Chief/CxO,
+   President, Co-founder/Founding, Amazon's Principal PM / Sr. Manager Product). Dropped: interns,
+   assistants, site operations (store, warehouse), and functions you wouldn't move into (engineering,
+   legal, finance, HR, design...) unless the title also mentions product, business, strategy, sales, growth
+   or GM. Product, business, GM, strategy and category roles get a ranking boost.
+   Titles that don't sound senior but often are (Product Lead, Senior/Staff/Principal PM, Strategy & Ops,
+   BizOps, BD, Partnerships, Growth/Category Lead, Senior Manager...) count when the posting asks for
+   6-20 years of experience (`experience_years` in `search.yaml`).
 2. **City**: target regions with priorities (Bay Area, Seattle, Singapore first; NYC, Vancouver, Dubai next;
    Toronto, London, Amsterdam after that). India roles are kept only at US multinationals, as a launchpad
    for an L-1A transfer.

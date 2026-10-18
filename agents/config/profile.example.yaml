@@ -33,7 +33,8 @@ strengths:
   - International expansion
 
 targets:
-  titles: [Head of Product, Director of Product, VP Product, GM, Head of Business, Head of Category, Head of E-commerce]
+  titles: [Head of Product, Director of Product, VP Product, GM, Head of Business, Head of Strategy, VP Business Development, Co-founder]
+  experience_range: "roles asking for ~6-20 years"
   sectors_prefer: [consumer internet, B2C marketplaces, e-commerce, gaming, consumer fintech, consumer AI]
   sectors_avoid: [pure B2B / enterprise SaaS]
   min_total_comp_usd: 400000

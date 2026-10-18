@@ -9,13 +9,29 @@ from ..text import norm
 from .models import Job
 
 _AMBIGUOUS_LOCATION = re.compile(r"^\s*$|^\d+\s+locations?$|multiple locations", re.I)
+_YEARS = re.compile(r"(?<![\d.$])(\d{1,2})\s*(?:\+|plus)?\s*(?:(?:-|–|to)\s*\d{1,2}\s*)?\+?\s*years?", re.I)
+
+
+def required_years(text: str) -> int | None:
+    """The largest 'N+ years' / 'N-M years' minimum a posting states (values above 25 are ignored)."""
+    values = [int(m.group(1)) for m in _YEARS.finditer(text or "")]
+    values = [v for v in values if 1 <= v <= 25]
+    return max(values) if values else None
 
 
 class Filter:
     def __init__(self, cfg: dict, companies: tuple[dict, ...] | list[dict], exclude_companies: list[str] = ()):
         roles = cfg["roles"]
         self.include = [re.compile(p, re.I) for p in roles["include"]]
+        self.exclude_always = [re.compile(p, re.I) for p in roles.get("exclude_always", [])]
         self.exclude = [re.compile(p, re.I) for p in roles.get("exclude", [])]
+        self.keep_if = [re.compile(p, re.I) for p in roles.get("keep_if", [])]
+        self.experience_titles = [re.compile(p, re.I) for p in cfg.get("experience_titles", [])]
+        years = cfg.get("experience_years") or {}
+        self.min_years, self.max_years = years.get("min", 6), years.get("max", 20)
+        core = cfg.get("core_functions") or {}
+        self.core_pattern = re.compile(core["pattern"], re.I) if core.get("pattern") else None
+        self.core_points = core.get("points", 0)
         self.seniority = [(re.compile(s["pattern"], re.I), s["points"]) for s in cfg.get("seniority", [])]
         self.regions = cfg["regions"]
         self._region_patterns = [
@@ -30,8 +46,23 @@ class Filter:
         self.blocked = {norm(c) for c in list(cfg.get("exclude_companies") or []) + list(exclude_companies)}
 
     # --- individual checks -------------------------------------------------
+    def title_level(self, title: str) -> str | None:
+        """'senior': the title alone qualifies. 'experience': qualifies if the posting asks for 6-20 years.
+
+        Senior titles in an excluded function survive when they also match `keep_if` (e.g. "Director,
+        Product - Engineering Tools"); experience-track titles in an excluded function never do.
+        """
+        if any(p.search(title) for p in self.exclude_always):
+            return None
+        excluded = any(p.search(title) for p in self.exclude)
+        if any(p.search(title) for p in self.include):
+            return None if excluded and not any(p.search(title) for p in self.keep_if) else "senior"
+        if not excluded and any(p.search(title) for p in self.experience_titles):
+            return "experience"
+        return None
+
     def title_ok(self, title: str) -> bool:
-        return any(p.search(title) for p in self.include) and not any(p.search(title) for p in self.exclude)
+        return self.title_level(title) is not None
 
     def region_for(self, location: str) -> dict | None:
         """The highest-priority target region the location mentions (multi-location postings list several)."""
@@ -74,7 +105,12 @@ class Filter:
             job.region = region["key"] if region else None
             job.rule_score = self.score(job, region)
             return True
-        if not self.title_ok(job.title) or region is None:
+        level = self.title_level(job.title)
+        if level is None or region is None:
+            return False
+        years = required_years(job.description)
+        job.extra["years"] = years
+        if level == "experience" and not (years and self.min_years <= years <= self.max_years):
             return False
         if region.get("require_us_mnc") and not (self.company_info(job.company) or {}).get("us_mnc"):
             return False
@@ -84,6 +120,10 @@ class Filter:
 
     def score(self, job: Job, region: dict | None) -> int:
         points = next((pts for pattern, pts in self.seniority if pattern.search(job.title)), 15)
+        if self.core_pattern and self.core_pattern.search(job.title):
+            points += self.core_points
+        if job.extra.get("years") and 8 <= job.extra["years"] <= 15:  # right in the candidate's band
+            points += 5
         priority = (region or {}).get("priority", 3)
         points += max(0, 30 - 8 * (priority - 1))
         text = f"{job.title}\n{job.description}"

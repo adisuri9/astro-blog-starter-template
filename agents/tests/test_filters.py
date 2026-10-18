@@ -3,7 +3,7 @@ from datetime import date, timedelta
 import pytest
 
 from career_agents import config
-from career_agents.scout.filters import Filter, dedupe
+from career_agents.scout.filters import Filter, dedupe, required_years
 from career_agents.scout.models import Job
 
 
@@ -16,21 +16,37 @@ def flt():
     "Head of Product, Consumer", "Director of Product Management", "Senior Director, Product - Growth",
     "VP, Product", "Vice President of E-commerce", "General Manager, Grocery", "Head of Category - Home",
     "AVP - Product", "Group Product Manager, Checkout", "Chief Product Officer", "Category Head, Electronics",
+    # senior roles outside product are welcome too
+    "Head of Business Development", "Director, Business Development", "VP Sales, Americas",
+    "Director, Strategy & Operations", "Co-Founder & CEO", "Founding Head of Growth", "Chief of Staff to GM, Ads",
+    "Assistant Vice President, Partnerships", "Head, Category Management", "Country Manager, Brazil",
+    "Product Marketing Director", "Associate Director, Product", "Director of Growth and Acquisition Marketing",
+    # Amazon's Director-equivalent (L7) titles
+    "Principal Product Manager - Tech, Amazon Fresh", "Sr. Manager, Product Management",
+    # excluded functions are kept when the title is also product/business
+    "Director, Product Management - Forward Deployed Engineering", "VP Finance & Business Operations",
 ])
 def test_titles_accepted(flt, title):
     assert flt.title_ok(title)
 
 
 @pytest.mark.parametrize("title", [
-    "Senior Product Manager", "Director of Engineering", "Director, Product Design", "VP Sales",
-    "Product Marketing Director", "Associate Director, Product", "Director, Business Development",
-    "Head of Talent", "Product Manager Intern", "General Manager, Fulfillment Center",
-    "Chief of Staff to GM, Ads", "Executive Business Partner, Chief Business Officer",
-    "Senior Director, Product and Brand Communications", "Creative Delivery Director, Business Marketing",
-    "Director of Growth and Acquisition Marketing", "Director, Production & Planning",
+    "Product Manager Intern", "Director of Engineering", "VP Engineering",
+    "Head of Talent", "Director, Legal", "Senior Software Engineer", "Executive Assistant to the CEO",
+    "Executive Business Partner, Chief Business Officer", "General Manager, Fulfillment Center",
+    "Store Director", "Chief Financial Officer", "Head of Security", "Senior Software Engineer, Product",
+    "Marketing Coordinator", "Account Executive", "VP, Global People Business Partners",
+    "Director, Product & Brand Communications",
 ])
 def test_titles_rejected(flt, title):
     assert not flt.title_ok(title)
+
+
+def test_core_functions_rank_above_other_senior_roles(flt):
+    product = Job("greenhouse", "1", "Airbnb", "VP Product", "Seattle")
+    sales = Job("greenhouse", "2", "Airbnb", "VP Sales", "Seattle")
+    assert flt.accept(product) and flt.accept(sales)
+    assert product.rule_score > sales.rule_score
 
 
 def test_region_prefers_highest_priority(flt):
@@ -74,3 +90,30 @@ def test_dedupe_prefers_company_ats():
     b = Job("greenhouse", "dd:9", "DoorDash", "Director, Product", "San Francisco, California", description="longer text")
     kept = dedupe([a, b])
     assert len(kept) == 1 and kept[0].source == "greenhouse"
+
+
+@pytest.mark.parametrize("text, years", [
+    ("10+ years of product experience; 3+ years managing managers", 10),
+    ("Requires 8-12 years in consumer tech", 8),
+    ("minimum 7 years experience", 7),
+    ("We were founded 120 years ago; 6+ years required", 6),
+    ("Salary $185,000 - $250,000 per year", None),
+    ("No experience requirement stated", None),
+])
+def test_required_years(text, years):
+    assert required_years(text) == years
+
+
+def test_experience_track_titles_need_6_to_20_years(flt):
+    def job(title, description):
+        return Job("greenhouse", title + description, "Airbnb", title, "Seattle, WA", description=description)
+
+    assert flt.title_level("Product Lead, Payments") == "experience"
+    assert flt.title_level("Director, Product") == "senior"
+    assert flt.accept(job("Product Lead, Payments", "8+ years of product management experience"))
+    assert flt.accept(job("Strategy & Operations Lead", "10-15 years in consulting or tech"))
+    assert flt.accept(job("Senior Product Manager, Checkout", "You have 6+ years of experience"))
+    assert not flt.accept(job("Senior Product Manager, Checkout", "3+ years of experience"))
+    assert not flt.accept(job("Business Operations Manager", "No years mentioned"))
+    # senior titles don't depend on the years asked
+    assert flt.accept(job("Head of Growth", "3+ years of experience"))

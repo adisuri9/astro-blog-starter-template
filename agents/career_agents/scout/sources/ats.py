@@ -159,7 +159,7 @@ def workday(session: requests.Session, company: dict, wants: Wants, terms: Itera
     base = f"https://{wd['host']}/wday/cxs/{wd['tenant']}/{wd['site']}"
     jobs, seen = [], set()
     for term in terms:
-        for offset in range(0, 60, 20):  # Workday pages are capped at 20
+        for offset in range(0, 200, 20):  # Workday pages are capped at 20; broad terms need several
             resp = session.post(
                 f"{base}/jobs",
                 json={"appliedFacets": {}, "limit": 20, "offset": offset, "searchText": term},
