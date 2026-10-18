@@ -25,6 +25,9 @@ def test_titles_accepted(flt, title):
     "Senior Product Manager", "Director of Engineering", "Director, Product Design", "VP Sales",
     "Product Marketing Director", "Associate Director, Product", "Director, Business Development",
     "Head of Talent", "Product Manager Intern", "General Manager, Fulfillment Center",
+    "Chief of Staff to GM, Ads", "Executive Business Partner, Chief Business Officer",
+    "Senior Director, Product and Brand Communications", "Creative Delivery Director, Business Marketing",
+    "Director of Growth and Acquisition Marketing", "Director, Production & Planning",
 ])
 def test_titles_rejected(flt, title):
     assert not flt.title_ok(title)

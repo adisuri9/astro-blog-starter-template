@@ -47,10 +47,11 @@ def collect(sources: set[str], cfg: dict, flt: Filter, log: Callable[[str], None
                 counts[company["ats"]] += len(found)
 
     if "amazon" in sources:
-        places = [r["amazon"] for r in cfg["regions"] if r.get("amazon")]
+        countries = list(dict.fromkeys(r["amazon_country"] for r in cfg["regions"] if r.get("amazon_country")))
+        amazon_terms = cfg.get("sources", {}).get("amazon", {}).get("search_terms") or ["director", "head of"]
         try:
             with requests.Session() as session:
-                found = amazon.fetch(session, terms, places, flt.wants)
+                found = amazon.fetch(session, amazon_terms, countries, flt.wants)
             jobs += found
             counts["amazon"] += len(found)
         except Exception as exc:

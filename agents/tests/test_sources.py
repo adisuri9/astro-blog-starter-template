@@ -62,8 +62,9 @@ def test_amazon_dedupes_across_queries():
                          "description": "Lead Fresh", "basic_qualifications": "10+ years", "preferred_qualifications": "MBA",
                          "posted_date": "September 30, 2026"}]}
     session = FakeSession({("GET", "https://www.amazon.jobs/en/search.json"): payload})
-    jobs = amazon.fetch(session, ["director product", "head of product"], ["Seattle, WA, USA"], ACCEPT_ALL)
+    jobs = amazon.fetch(session, ["director", "head of"], ["USA"], ACCEPT_ALL)
     assert len(jobs) == 1
+    assert session.calls[0][2]["params"]["country"] == "USA"
     assert jobs[0].url == "https://www.amazon.jobs/en/jobs/3012345/director" and jobs[0].posted_at == "2026-09-30"
 
 
