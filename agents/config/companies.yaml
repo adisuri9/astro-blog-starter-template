@@ -25,16 +25,12 @@ companies:
   - {name: Chime, ats: greenhouse, slug: chime}
   - {name: SoFi, ats: greenhouse, slug: sofi}
   - {name: Nextdoor, ats: greenhouse, slug: nextdoor}
-  - {name: Strava, ats: greenhouse, slug: strava}
-  - {name: Grammarly, ats: greenhouse, slug: grammarly}
   - {name: Faire, ats: greenhouse, slug: faire}
-  - {name: Thumbtack, ats: greenhouse, slug: thumbtack}
   - {name: Peloton, ats: greenhouse, slug: peloton}
   - {name: Block (Cash App), ats: greenhouse, slug: block}
   - {name: Dropbox, ats: greenhouse, slug: dropbox}
   - {name: Anthropic, ats: greenhouse, slug: anthropic}
   - {name: Scopely, ats: greenhouse, slug: scopely}
-  - {name: DraftKings, ats: greenhouse, slug: draftkings}
   - {name: PrizePicks, ats: greenhouse, slug: prizepicks}
   - {name: Monzo, ats: greenhouse, slug: monzo}
 
@@ -46,20 +42,21 @@ companies:
   - {name: Notion, ats: ashby, slug: notion}
   - {name: ElevenLabs, ats: ashby, slug: elevenlabs}
   - {name: Perplexity, ats: ashby, slug: perplexity}
-  - {name: Whatnot, ats: ashby, slug: whatnot}
   - {name: Kalshi, ats: ashby, slug: kalshi}
+  - {name: Strava, ats: ashby, slug: strava}
+  - {name: Thumbtack, ats: ashby, slug: thumbtack}
 
   # --- SmartRecruiters ---
   - {name: Delivery Hero, ats: smartrecruiters, slug: DeliveryHero}
 
   # --- Workday ---
-  - {name: Walmart, ats: workday, workday: {host: walmart.wd5.myworkdayjobs.com, tenant: walmart, site: WalmartExternal}, us_mnc: true}
   - {name: PayPal, ats: workday, workday: {host: paypal.wd1.myworkdayjobs.com, tenant: paypal, site: jobs}, us_mnc: true}
   - {name: Target, ats: workday, workday: {host: target.wd5.myworkdayjobs.com, tenant: target, site: targetcareers}, us_mnc: true}
   - {name: Disney, ats: workday, workday: {host: disney.wd5.myworkdayjobs.com, tenant: disney, site: disneycareer}, us_mnc: true}
   - {name: eBay, ats: workday, workday: {host: ebay.wd5.myworkdayjobs.com, tenant: ebay, site: apply}, us_mnc: true}
   - {name: Nike, ats: workday, workday: {host: nike.wd1.myworkdayjobs.com, tenant: nike, site: nke}, us_mnc: true}
   - {name: Zillow, ats: workday, workday: {host: zillow.wd5.myworkdayjobs.com, tenant: zillow, site: Zillow_Group_External}}
+  - {name: DraftKings, ats: workday, workday: {host: draftkings.wd1.myworkdayjobs.com, tenant: draftkings, site: DraftKings}}
 
   # --- Own career sites (found via the boards and posts sources; Amazon has its own source) ---
   - {name: Amazon, ats: none, us_mnc: true}
@@ -88,3 +85,7 @@ companies:
   - {name: FanDuel, ats: none}
   - {name: Electronic Arts, ats: none}
   - {name: Flipkart, ats: none}
+  - {name: Walmart, ats: none, us_mnc: true}       # Workday board rejects API requests (Oct 2026)
+  - {name: Superhuman (Grammarly), ats: none}     # former Greenhouse board removed (Oct 2026)
+  - {name: Grammarly, ats: none}
+  - {name: Whatnot, ats: none}                    # no public ATS board found (Oct 2026)
